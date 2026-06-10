@@ -1,452 +1,204 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Inkwell — Blog</title>
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
-<style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-:root {
-  --ink: #1a1a2e;
-  --ink-soft: #2e2e4a;
-  --paper: #f7f4ef;
-  --paper2: #ede9e1;
-  --paper3: #e2ddd4;
-  --accent: #c94f3a;
-  --accent-light: rgba(201,79,58,0.1);
-  --accent-glow: rgba(201,79,58,0.25);
-  --gold: #c8933a;
-  --muted: #7a7870;
-  --muted2: #a8a49c;
-  --border: rgba(26,26,46,0.1);
-  --border2: rgba(26,26,46,0.18);
-  --shadow: 0 2px 12px rgba(26,26,46,0.08);
-  --shadow-lg: 0 8px 32px rgba(26,26,46,0.14);
-  --serif: 'Playfair Display', Georgia, serif;
-  --sans: 'Inter', system-ui, sans-serif;
-  --radius: 4px;
-  --radius-md: 8px;
-  --transition: 0.18s ease;
-}
-
-html { font-size: 16px; scroll-behavior: smooth; }
-body { font-family: var(--sans); background: var(--paper); color: var(--ink); min-height: 100vh; }
-
-/* ── HEADER ── */
-header {
-  background: var(--ink);
-  border-bottom: 3px solid var(--accent);
-  position: sticky; top: 0; z-index: 100;
-}
-.header-inner {
-  max-width: 1100px; margin: 0 auto;
-  padding: 0 2rem;
-  display: flex; align-items: center; justify-content: space-between;
-  height: 64px;
-}
-.logo {
-  font-family: var(--serif);
-  font-size: 1.6rem;
-  color: var(--paper);
-  letter-spacing: -0.02em;
-  text-decoration: none;
-}
-.logo em { color: var(--accent); font-style: italic; }
-.header-actions { display: flex; align-items: center; gap: 1rem; }
-.btn {
-  display: inline-flex; align-items: center; gap: 6px;
-  padding: 0.5rem 1.25rem;
-  font-family: var(--sans); font-size: 0.85rem; font-weight: 500;
-  border-radius: var(--radius); cursor: pointer; transition: all var(--transition);
-  border: none; text-decoration: none; letter-spacing: 0.02em;
-}
-.btn-primary { background: var(--accent); color: white; }
-.btn-primary:hover { background: #b84432; transform: translateY(-1px); box-shadow: 0 4px 12px var(--accent-glow); }
-.btn-outline { background: transparent; color: var(--paper); border: 1px solid rgba(247,244,239,0.3); }
-.btn-outline:hover { border-color: var(--paper); background: rgba(247,244,239,0.08); }
-.btn-ghost { background: transparent; color: var(--muted); border: 1px solid var(--border); }
-.btn-ghost:hover { background: var(--paper2); color: var(--ink); border-color: var(--border2); }
-.btn-sm { padding: 0.35rem 0.9rem; font-size: 0.8rem; }
-
-/* ── HERO MASTHEAD ── */
-.masthead {
-  background: var(--ink);
-  padding: 3.5rem 2rem 2.5rem;
-  text-align: center;
-  border-bottom: 1px solid rgba(247,244,239,0.08);
-}
-.masthead-date {
-  font-size: 0.72rem; color: var(--muted2); letter-spacing: 0.12em;
-  text-transform: uppercase; margin-bottom: 1rem; font-weight: 500;
-}
-.masthead-title {
-  font-family: var(--serif); font-size: clamp(2.5rem, 6vw, 4rem);
-  color: var(--paper); line-height: 1.1; letter-spacing: -0.02em;
-  margin-bottom: 0.75rem;
-}
-.masthead-title em { color: var(--accent); }
-.masthead-sub {
-  font-size: 0.95rem; color: var(--muted2); max-width: 480px;
-  margin: 0 auto 1.5rem; line-height: 1.7;
-}
-.masthead-divider {
-  display: flex; align-items: center; justify-content: center;
-  gap: 12px; margin-top: 1.5rem;
-}
-.masthead-divider-line { flex: 1; max-width: 120px; height: 1px; background: rgba(247,244,239,0.15); }
-.masthead-divider-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); }
-
-/* ── LAYOUT ── */
-.page { max-width: 1100px; margin: 0 auto; padding: 2.5rem 2rem; display: grid; grid-template-columns: 1fr 340px; gap: 3rem; }
-
-/* ── MAIN FEED ── */
-.feed-header {
-  display: flex; align-items: baseline; justify-content: space-between;
-  margin-bottom: 1.75rem; padding-bottom: 0.75rem;
-  border-bottom: 2px solid var(--ink);
-}
-.feed-header h2 { font-family: var(--serif); font-size: 1.1rem; letter-spacing: 0.04em; text-transform: uppercase; }
-.post-count { font-size: 0.78rem; color: var(--muted); font-weight: 500; }
-
-/* ── POST CARD ── */
-.post-card {
-  background: white;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  margin-bottom: 1.5rem;
-  overflow: hidden;
-  transition: box-shadow var(--transition), transform var(--transition);
-  box-shadow: var(--shadow);
-}
-.post-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); }
-
-.post-card-header { padding: 1.5rem 1.5rem 0; }
-.post-meta-row { display: flex; align-items: center; gap: 8px; margin-bottom: 0.85rem; }
-.post-tag {
-  font-size: 0.68rem; font-weight: 600; letter-spacing: 0.08em;
-  text-transform: uppercase; color: var(--accent);
-  background: var(--accent-light); padding: 2px 8px; border-radius: 2px;
-}
-.post-date { font-size: 0.75rem; color: var(--muted2); }
-.post-title {
-  font-family: var(--serif); font-size: 1.4rem; font-weight: 700;
-  line-height: 1.3; color: var(--ink); margin-bottom: 0.6rem;
-  letter-spacing: -0.01em;
-}
-.post-body-preview {
-  font-size: 0.9rem; color: var(--muted); line-height: 1.75;
-  padding: 0 1.5rem;
-  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
-  line-clamp: 3;
-  margin-top: 0.5rem;
-}
-
-.post-card-footer {
-  padding: 1rem 1.5rem;
-  display: flex; align-items: center; justify-content: space-between;
-  border-top: 1px solid var(--border); margin-top: 1rem;
-  background: var(--paper);
-}
-.post-stats { display: flex; align-items: center; gap: 1.25rem; }
-.stat-btn {
-  display: flex; align-items: center; gap: 5px;
-  background: none; border: none; cursor: pointer;
-  font-size: 0.82rem; color: var(--muted); font-family: var(--sans);
-  font-weight: 500; transition: color var(--transition); padding: 4px 8px;
-  border-radius: var(--radius);
-}
-.stat-btn:hover { color: var(--accent); background: var(--accent-light); }
-.stat-btn.liked { color: var(--accent); }
-.stat-btn svg { width: 15px; height: 15px; }
-
-.expand-btn {
-  font-size: 0.8rem; color: var(--ink); font-weight: 500;
-  background: none; border: none; cursor: pointer; font-family: var(--sans);
-  display: flex; align-items: center; gap: 4px; transition: color var(--transition);
-}
-.expand-btn:hover { color: var(--accent); }
-
-/* ── COMMENTS SECTION ── */
-.comments-section {
-  border-top: 1px solid var(--border);
-  background: var(--paper);
-  padding: 1.25rem 1.5rem;
-  display: none;
-}
-.comments-section.open { display: block; }
-.comments-title { font-size: 0.78rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin-bottom: 1rem; }
-
-.comment-item {
-  display: flex; gap: 10px; margin-bottom: 0.85rem;
-  padding-bottom: 0.85rem; border-bottom: 1px solid var(--border);
-}
-.comment-item:last-of-type { border-bottom: none; }
-.comment-avatar {
-  width: 30px; height: 30px; border-radius: 50%;
-  background: var(--ink); color: var(--paper);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 0.72rem; font-weight: 600; flex-shrink: 0; margin-top: 2px;
-  text-transform: uppercase;
-}
-.comment-user { font-size: 0.82rem; font-weight: 600; color: var(--ink); margin-bottom: 2px; }
-.comment-body { font-size: 0.85rem; color: var(--muted); line-height: 1.6; }
-
-.comment-form { margin-top: 1rem; display: flex; flex-direction: column; gap: 8px; }
-.comment-inputs { display: grid; grid-template-columns: 1fr 2fr; gap: 8px; }
-.c-input {
-  width: 100%; background: white; border: 1px solid var(--border2);
-  border-radius: var(--radius); padding: 0.55rem 0.75rem;
-  font-family: var(--sans); font-size: 0.83rem; color: var(--ink);
-  outline: none; transition: border-color var(--transition);
-}
-.c-input:focus { border-color: var(--accent); }
-.c-input::placeholder { color: var(--muted2); }
-textarea.c-input { resize: none; min-height: 68px; line-height: 1.6; }
-
-/* ── SIDEBAR ── */
-.sidebar-widget {
-  background: white; border: 1px solid var(--border);
-  border-radius: var(--radius-md); padding: 1.5rem;
-  margin-bottom: 1.5rem; box-shadow: var(--shadow);
-}
-.widget-title {
-  font-family: var(--serif); font-size: 1rem;
-  color: var(--ink); margin-bottom: 1.25rem;
-  padding-bottom: 0.75rem; border-bottom: 2px solid var(--ink);
-  text-transform: uppercase; letter-spacing: 0.05em; font-size: 0.85rem;
-}
-
-/* Write post form */
-.form-group { margin-bottom: 1rem; }
-.form-label { display: block; font-size: 0.72rem; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.4rem; }
-.form-input {
-  width: 100%; background: var(--paper); border: 1px solid var(--border2);
-  border-radius: var(--radius); padding: 0.6rem 0.75rem;
-  font-family: var(--sans); font-size: 0.875rem; color: var(--ink);
-  outline: none; transition: border-color var(--transition);
-}
-.form-input:focus { border-color: var(--accent); background: white; }
-.form-input::placeholder { color: var(--muted2); }
-textarea.form-input { resize: vertical; min-height: 110px; line-height: 1.6; }
-
-/* Stats widget */
-.stats-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
-.stat-box { text-align: center; padding: 0.85rem 0.5rem; background: var(--paper); border-radius: var(--radius); }
-.stat-num { font-family: var(--serif); font-size: 1.6rem; color: var(--ink); font-weight: 700; line-height: 1; }
-.stat-label { font-size: 0.68rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 3px; font-weight: 500; }
-
-/* Recent posts widget */
-.recent-item {
-  display: flex; gap: 10px; align-items: flex-start;
-  padding: 0.6rem 0; border-bottom: 1px solid var(--border); cursor: pointer;
-  transition: color var(--transition);
-}
-.recent-item:last-child { border-bottom: none; }
-.recent-item:hover .recent-title { color: var(--accent); }
-.recent-num { font-family: var(--serif); font-size: 1.2rem; color: var(--paper3); font-weight: 700; min-width: 24px; }
-.recent-title { font-size: 0.83rem; font-weight: 500; color: var(--ink); line-height: 1.4; }
-.recent-meta { font-size: 0.72rem; color: var(--muted2); margin-top: 2px; }
-
-/* ── EMPTY / LOADING ── */
-.empty-feed {
-  text-align: center; padding: 4rem 2rem;
-  background: white; border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-}
-.empty-icon { font-size: 2.5rem; margin-bottom: 1rem; opacity: 0.3; }
-.empty-title { font-family: var(--serif); font-size: 1.4rem; color: var(--muted); margin-bottom: 0.5rem; }
-.empty-desc { font-size: 0.875rem; color: var(--muted2); }
-
-.skeleton { background: linear-gradient(90deg, var(--paper2) 25%, var(--paper3) 50%, var(--paper2) 75%); background-size: 200% 100%; animation: shimmer 1.4s infinite; border-radius: 4px; }
-@keyframes shimmer { to { background-position: -200% 0; } }
-.skel-card { background: white; border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1.5rem; margin-bottom: 1.5rem; }
-
-/* ── TOAST ── */
-.toast-wrap { position: fixed; bottom: 2rem; right: 2rem; display: flex; flex-direction: column; gap: 8px; z-index: 999; }
-.toast {
-  background: var(--ink); color: var(--paper);
-  padding: 0.75rem 1.1rem; border-radius: var(--radius-md);
-  font-size: 0.85rem; display: flex; align-items: center; gap: 8px;
-  box-shadow: var(--shadow-lg); animation: slideUp 0.2s ease;
-  border-left: 3px solid var(--accent);
-  max-width: 320px;
-}
-.toast.success { border-left-color: #3aad6e; }
-.toast.error { border-left-color: var(--accent); }
-@keyframes slideUp { from { transform: translateY(12px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-
-/* ── LOADING SPINNER ── */
-.spinner { display: inline-block; width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 0.7s linear infinite; }
-.spinner.dark { border-color: rgba(26,26,46,0.15); border-top-color: var(--accent); }
-@keyframes spin { to { transform: rotate(360deg); } }
-
-/* ── LIKE ANIMATION ── */
-@keyframes pop { 0% { transform: scale(1); } 40% { transform: scale(1.35); } 100% { transform: scale(1); } }
-.pop { animation: pop 0.25s ease; }
-
-/* ── RESPONSIVE ── */
-@media (max-width: 768px) {
-  .page { grid-template-columns: 1fr; }
-  .sidebar { order: -1; }
-  .comment-inputs { grid-template-columns: 1fr; }
-}
-</style>
-</head>
-<body>
-
-<!-- Header -->
-<header>
-  <div class="header-inner">
-    <a href="#" class="logo">Ink<em>well</em></a>
-    <div class="header-actions">
-      <button class="btn btn-outline btn-sm" onclick="document.getElementById('write-title').focus(); document.querySelector('.sidebar').scrollIntoView({behavior:'smooth'})">✍ Write</button>
-    </div>
-  </div>
-</header>
-
-<!-- Masthead -->
-<div class="masthead">
-  <div class="masthead-date" id="masthead-date"></div>
-  <h1 class="masthead-title">Stories Worth <em>Reading</em></h1>
-  <p class="masthead-sub">A space for ideas, perspectives, and writing that matters. Share yours.</p>
-  <div class="masthead-divider">
-    <div class="masthead-divider-line"></div>
-    <div class="masthead-divider-dot"></div>
-    <div class="masthead-divider-line"></div>
-  </div>
-</div>
-
-<!-- Page body -->
-<div class="page">
-
-  <!-- Feed -->
-  <main>
-    <div class="feed-header">
-      <h2>Latest Posts</h2>
-      <span class="post-count" id="post-count">Loading…</span>
-    </div>
-    <div id="feed"></div>
-  </main>
-
-  <!-- Sidebar -->
-  <aside class="sidebar">
-
-    <!-- Write post -->
-    <div class="sidebar-widget">
-      <div class="widget-title">✍ Write a Post</div>
-      <div class="form-group">
-        <label class="form-label">Title</label>
-        <input type="text" class="form-input" id="write-title" placeholder="Your headline…" maxlength="120" />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Inkwell — Blog</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- Header -->
+    <header>
+      <div class="header-inner">
+        <a href="#" class="logo">Ink<em>well</em></a>
+        <div class="header-actions">
+          <button
+            class="btn btn-outline btn-sm"
+            onclick="
+              document.getElementById('write-title').focus();
+              document
+                .querySelector('.sidebar')
+                .scrollIntoView({ behavior: 'smooth' });
+            "
+          >
+            ✍ Write
+          </button>
+        </div>
       </div>
-      <div class="form-group">
-        <label class="form-label">Body</label>
-        <textarea class="form-input" id="write-body" placeholder="What's on your mind?"></textarea>
-      </div>
-      <button class="btn btn-primary" style="width:100%" id="publish-btn" onclick="publishPost()">Publish Post</button>
-    </div>
+    </header>
 
-    <!-- Stats -->
-    <div class="sidebar-widget">
-      <div class="widget-title">📊 Stats</div>
-      <div class="stats-row">
-        <div class="stat-box">
-          <div class="stat-num" id="s-posts">0</div>
-          <div class="stat-label">Posts</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-num" id="s-comments">0</div>
-          <div class="stat-label">Comments</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-num" id="s-likes">0</div>
-          <div class="stat-label">Likes</div>
-        </div>
+    <!-- Masthead -->
+    <div class="masthead">
+      <div class="masthead-date" id="masthead-date"></div>
+      <h1 class="masthead-title">Stories Worth <em>Reading</em></h1>
+      <p class="masthead-sub">
+        A space for ideas, perspectives, and writing that matters. Share yours.
+      </p>
+      <div class="masthead-divider">
+        <div class="masthead-divider-line"></div>
+        <div class="masthead-divider-dot"></div>
+        <div class="masthead-divider-line"></div>
       </div>
     </div>
 
-    <!-- Recent -->
-    <div class="sidebar-widget">
-      <div class="widget-title">🗂 Recent Posts</div>
-      <div id="recent-list"></div>
+    <!-- Page body -->
+    <div class="page">
+      <!-- Feed -->
+      <main>
+        <div class="feed-header">
+          <h2>Latest Posts</h2>
+          <span class="post-count" id="post-count">Loading…</span>
+        </div>
+        <div id="feed"></div>
+      </main>
+
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <!-- Write post -->
+        <div class="sidebar-widget">
+          <div class="widget-title">✍ Write a Post</div>
+          <div class="form-group">
+            <label class="form-label">Title</label>
+            <input
+              type="text"
+              class="form-input"
+              id="write-title"
+              placeholder="Your headline…"
+              maxlength="120"
+            />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Body</label>
+            <textarea
+              class="form-input"
+              id="write-body"
+              placeholder="What's on your mind?"
+            ></textarea>
+          </div>
+          <button
+            class="btn btn-primary"
+            style="width: 100%"
+            id="publish-btn"
+            onclick="publishPost()"
+          >
+            Publish Post
+          </button>
+        </div>
+
+        <!-- Stats -->
+        <div class="sidebar-widget">
+          <div class="widget-title">📊 Stats</div>
+          <div class="stats-row">
+            <div class="stat-box">
+              <div class="stat-num" id="s-posts">0</div>
+              <div class="stat-label">Posts</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-num" id="s-comments">0</div>
+              <div class="stat-label">Comments</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-num" id="s-likes">0</div>
+              <div class="stat-label">Likes</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent -->
+        <div class="sidebar-widget">
+          <div class="widget-title">🗂 Recent Posts</div>
+          <div id="recent-list"></div>
+        </div>
+      </aside>
     </div>
 
-  </aside>
-</div>
+    <!-- Toast container -->
+    <div class="toast-wrap" id="toasts"></div>
 
-<!-- Toast container -->
-<div class="toast-wrap" id="toasts"></div>
+    <script>
+      // ── CONFIG ──────────────────────────────────────────────
+      const API = "https://blogapp-swfa.onrender.com/api/v1";
 
-<script>
-// ── CONFIG ──────────────────────────────────────────────
-const API = 'https://blogapp-swfa.onrender.com/api/v1';
+      // ── STATE ───────────────────────────────────────────────
+      let posts = [];
+      let username =
+        localStorage.getItem("blog_username") ||
+        "Reader" + Math.floor(Math.random() * 1000);
+      localStorage.setItem("blog_username", username);
 
-// ── STATE ───────────────────────────────────────────────
-let posts = [];
-let username = localStorage.getItem('blog_username') || ('Reader' + Math.floor(Math.random()*1000));
-localStorage.setItem('blog_username', username);
+      // ── INIT ────────────────────────────────────────────────
+      document.addEventListener("DOMContentLoaded", () => {
+        document.getElementById("masthead-date").textContent =
+          new Date().toLocaleDateString("en-IN", {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          });
+        fetchPosts();
+      });
 
-// ── INIT ────────────────────────────────────────────────
-document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('masthead-date').textContent =
-    new Date().toLocaleDateString('en-IN', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
-  fetchPosts();
-});
+      // ── API ─────────────────────────────────────────────────
+      async function apiFetch(path, opts = {}) {
+        const res = await fetch(`${API}${path}`, {
+          headers: { "Content-Type": "application/json" },
+          ...opts,
+        });
+        const json = await res.json();
+        if (!res.ok)
+          throw new Error(json.error || json.message || "Request failed");
+        return json;
+      }
 
-// ── API ─────────────────────────────────────────────────
-async function apiFetch(path, opts = {}) {
-  const res = await fetch(`${API}${path}`, {
-    headers: { 'Content-Type': 'application/json' },
-    ...opts,
-  });
-  const json = await res.json();
-  if (!res.ok) throw new Error(json.error || json.message || 'Request failed');
-  return json;
-}
-
-// ── FETCH POSTS ─────────────────────────────────────────
-async function fetchPosts() {
-  showSkeletons();
-  try {
-    const data = await apiFetch('/Posts');
-    posts = (data.Posts || []).reverse();
-    renderFeed();
-    updateSidebar();
-  } catch (e) {
-    document.getElementById('feed').innerHTML = `
+      // ── FETCH POSTS ─────────────────────────────────────────
+      async function fetchPosts() {
+        showSkeletons();
+        try {
+          const data = await apiFetch("/Posts");
+          posts = (data.Posts || []).reverse();
+          renderFeed();
+          updateSidebar();
+        } catch (e) {
+          document.getElementById("feed").innerHTML = `
       <div class="empty-feed">
         <div class="empty-icon">⚠️</div>
         <div class="empty-title">Could not load posts</div>
         <div class="empty-desc">${esc(e.message)}</div>
       </div>`;
-    document.getElementById('post-count').textContent = 'Error';
-  }
-}
+          document.getElementById("post-count").textContent = "Error";
+        }
+      }
 
-// ── RENDER FEED ─────────────────────────────────────────
-function renderFeed() {
-  const feed = document.getElementById('feed');
-  document.getElementById('post-count').textContent = posts.length + ' post' + (posts.length !== 1 ? 's' : '');
+      // ── RENDER FEED ─────────────────────────────────────────
+      function renderFeed() {
+        const feed = document.getElementById("feed");
+        document.getElementById("post-count").textContent =
+          posts.length + " post" + (posts.length !== 1 ? "s" : "");
 
-  if (posts.length === 0) {
-    feed.innerHTML = `
+        if (posts.length === 0) {
+          feed.innerHTML = `
       <div class="empty-feed">
         <div class="empty-icon">📰</div>
         <div class="empty-title">No posts yet</div>
         <div class="empty-desc">Be the first to publish something.</div>
       </div>`;
-    return;
-  }
+          return;
+        }
 
-  feed.innerHTML = posts.map((p, i) => {
-    const likeCount = p.likes?.length || 0;
-    const commentCount = p.comments?.length || 0;
-    const preview = p.body.length > 220 ? p.body.slice(0, 220) + '…' : p.body;
+        feed.innerHTML = posts
+          .map((p, i) => {
+            const likeCount = p.likes?.length || 0;
+            const commentCount = p.comments?.length || 0;
+            const preview =
+              p.body.length > 220 ? p.body.slice(0, 220) + "…" : p.body;
 
-    return `
+            return `
     <article class="post-card" id="card-${p._id}">
       <div class="post-card-header">
         <div class="post-meta-row">
@@ -458,8 +210,8 @@ function renderFeed() {
       <p class="post-body-preview">${esc(preview)}</p>
       <div class="post-card-footer">
         <div class="post-stats">
-          <button class="stat-btn ${isLiked(p._id) ? 'liked' : ''}" id="like-btn-${p._id}" onclick="toggleLike('${p._id}', ${likeCount})">
-            <svg viewBox="0 0 24 24" fill="${isLiked(p._id) ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2">
+          <button class="stat-btn ${isLiked(p._id) ? "liked" : ""}" id="like-btn-${p._id}" onclick="toggleLike('${p._id}', ${likeCount})">
+            <svg viewBox="0 0 24 24" fill="${isLiked(p._id) ? "currentColor" : "none"}" stroke="currentColor" stroke-width="2">
               <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
             </svg>
             <span id="like-count-${p._id}">${likeCount}</span>
@@ -491,16 +243,19 @@ function renderFeed() {
         </div>
       </div>
     </article>`;
-  }).join('');
-}
+          })
+          .join("");
+      }
 
-function renderComments(comments) {
-  if (!comments || comments.length === 0) return `<p style="font-size:0.82rem;color:var(--muted2);margin-bottom:0.75rem">No responses yet. Be the first!</p>`;
-  return comments.map(c => {
-    const name = typeof c === 'object' ? (c.user || 'Anonymous') : 'User';
-    const body = typeof c === 'object' ? (c.body || '') : '';
-    const initials = name.slice(0, 2).toUpperCase();
-    return `
+      function renderComments(comments) {
+        if (!comments || comments.length === 0)
+          return `<p style="font-size:0.82rem;color:var(--muted2);margin-bottom:0.75rem">No responses yet. Be the first!</p>`;
+        return comments
+          .map((c) => {
+            const name = typeof c === "object" ? c.user || "Anonymous" : "User";
+            const body = typeof c === "object" ? c.body || "" : "";
+            const initials = name.slice(0, 2).toUpperCase();
+            return `
     <div class="comment-item">
       <div class="comment-avatar" style="background:${avatarColor(name)}">${initials}</div>
       <div>
@@ -508,222 +263,263 @@ function renderComments(comments) {
         <div class="comment-body">${esc(body)}</div>
       </div>
     </div>`;
-  }).join('');
-}
+          })
+          .join("");
+      }
 
-// ── PUBLISH POST ────────────────────────────────────────
-async function publishPost() {
-  const title = document.getElementById('write-title').value.trim();
-  const body = document.getElementById('write-body').value.trim();
-  if (!title || !body) { showToast('Title and body are required', 'error'); return; }
+      // ── PUBLISH POST ────────────────────────────────────────
+      async function publishPost() {
+        const title = document.getElementById("write-title").value.trim();
+        const body = document.getElementById("write-body").value.trim();
+        if (!title || !body) {
+          showToast("Title and body are required", "error");
+          return;
+        }
 
-  const btn = document.getElementById('publish-btn');
-  btn.innerHTML = '<span class="spinner"></span> Publishing…';
-  btn.disabled = true;
+        const btn = document.getElementById("publish-btn");
+        btn.innerHTML = '<span class="spinner"></span> Publishing…';
+        btn.disabled = true;
 
-  try {
-    const data = await apiFetch('/posts/create', {
-      method: 'POST',
-      body: JSON.stringify({ title, body }),
-    });
-    posts.unshift(data.post);
-    renderFeed();
-    updateSidebar();
-    document.getElementById('write-title').value = '';
-    document.getElementById('write-body').value = '';
-    showToast('Post published!', 'success');
-    document.getElementById('feed').scrollIntoView({ behavior: 'smooth' });
-  } catch (e) {
-    showToast('Failed: ' + e.message, 'error');
-  } finally {
-    btn.innerHTML = 'Publish Post';
-    btn.disabled = false;
-  }
-}
+        try {
+          const data = await apiFetch("/posts/create", {
+            method: "POST",
+            body: JSON.stringify({ title, body }),
+          });
+          posts.unshift(data.post);
+          renderFeed();
+          updateSidebar();
+          document.getElementById("write-title").value = "";
+          document.getElementById("write-body").value = "";
+          showToast("Post published!", "success");
+          document
+            .getElementById("feed")
+            .scrollIntoView({ behavior: "smooth" });
+        } catch (e) {
+          showToast("Failed: " + e.message, "error");
+        } finally {
+          btn.innerHTML = "Publish Post";
+          btn.disabled = false;
+        }
+      }
 
-// ── LIKE / UNLIKE ───────────────────────────────────────
-function isLiked(postId) {
-  const liked = JSON.parse(localStorage.getItem('liked_posts') || '{}');
-  return !!liked[postId];
-}
-function getLikeId(postId) {
-  const liked = JSON.parse(localStorage.getItem('liked_posts') || '{}');
-  return liked[postId];
-}
-function setLiked(postId, likeId) {
-  const liked = JSON.parse(localStorage.getItem('liked_posts') || '{}');
-  liked[postId] = likeId;
-  localStorage.setItem('liked_posts', JSON.stringify(liked));
-}
-function removeLiked(postId) {
-  const liked = JSON.parse(localStorage.getItem('liked_posts') || '{}');
-  delete liked[postId];
-  localStorage.setItem('liked_posts', JSON.stringify(liked));
-}
+      // ── LIKE / UNLIKE ───────────────────────────────────────
+      function isLiked(postId) {
+        const liked = JSON.parse(localStorage.getItem("liked_posts") || "{}");
+        return !!liked[postId];
+      }
+      function getLikeId(postId) {
+        const liked = JSON.parse(localStorage.getItem("liked_posts") || "{}");
+        return liked[postId];
+      }
+      function setLiked(postId, likeId) {
+        const liked = JSON.parse(localStorage.getItem("liked_posts") || "{}");
+        liked[postId] = likeId;
+        localStorage.setItem("liked_posts", JSON.stringify(liked));
+      }
+      function removeLiked(postId) {
+        const liked = JSON.parse(localStorage.getItem("liked_posts") || "{}");
+        delete liked[postId];
+        localStorage.setItem("liked_posts", JSON.stringify(liked));
+      }
 
-async function toggleLike(postId, currentCount) {
-  const btn = document.getElementById(`like-btn-${postId}`);
-  const countEl = document.getElementById(`like-count-${postId}`);
-  if (btn.disabled) return;
-  btn.disabled = true;
+      async function toggleLike(postId, currentCount) {
+        const btn = document.getElementById(`like-btn-${postId}`);
+        const countEl = document.getElementById(`like-count-${postId}`);
+        if (btn.disabled) return;
+        btn.disabled = true;
 
-  try {
-    if (isLiked(postId)) {
-      // Unlike
-      const likeId = getLikeId(postId);
-      await apiFetch('/likes/unlike', {
-        method: 'POST',
-        body: JSON.stringify({ post: postId, like: likeId }),
-      });
-      removeLiked(postId);
-      btn.classList.remove('liked');
-      btn.querySelector('svg').setAttribute('fill', 'none');
-      countEl.textContent = Math.max(0, parseInt(countEl.textContent) - 1);
-    } else {
-      // Like
-      const data = await apiFetch('/Likes/like', {
-        method: 'POST',
-        body: JSON.stringify({ post: postId, user: username }),
-      });
-      setLiked(postId, data.like._id);
-      btn.classList.add('liked');
-      btn.querySelector('svg').setAttribute('fill', 'currentColor');
-      countEl.textContent = parseInt(countEl.textContent) + 1;
-      btn.classList.add('pop');
-      setTimeout(() => btn.classList.remove('pop'), 300);
-    }
-    updateSidebarLikes();
-  } catch (e) {
-    showToast('Could not update like: ' + e.message, 'error');
-  } finally {
-    btn.disabled = false;
-  }
-}
+        try {
+          if (isLiked(postId)) {
+            // Unlike
+            const likeId = getLikeId(postId);
+            await apiFetch("/likes/unlike", {
+              method: "POST",
+              body: JSON.stringify({ post: postId, like: likeId }),
+            });
+            removeLiked(postId);
+            btn.classList.remove("liked");
+            btn.querySelector("svg").setAttribute("fill", "none");
+            countEl.textContent = Math.max(
+              0,
+              parseInt(countEl.textContent) - 1,
+            );
+          } else {
+            // Like
+            const data = await apiFetch("/Likes/like", {
+              method: "POST",
+              body: JSON.stringify({ post: postId, user: username }),
+            });
+            setLiked(postId, data.like._id);
+            btn.classList.add("liked");
+            btn.querySelector("svg").setAttribute("fill", "currentColor");
+            countEl.textContent = parseInt(countEl.textContent) + 1;
+            btn.classList.add("pop");
+            setTimeout(() => btn.classList.remove("pop"), 300);
+          }
+          updateSidebarLikes();
+        } catch (e) {
+          showToast("Could not update like: " + e.message, "error");
+        } finally {
+          btn.disabled = false;
+        }
+      }
 
-// ── POST COMMENT ────────────────────────────────────────
-async function postComment(postId) {
-  const user = document.getElementById(`cname-${postId}`).value.trim() || username;
-  const body = document.getElementById(`cbody-${postId}`).value.trim();
-  if (!body) { showToast('Write something first!', 'error'); return; }
+      // ── POST COMMENT ────────────────────────────────────────
+      async function postComment(postId) {
+        const user =
+          document.getElementById(`cname-${postId}`).value.trim() || username;
+        const body = document.getElementById(`cbody-${postId}`).value.trim();
+        if (!body) {
+          showToast("Write something first!", "error");
+          return;
+        }
 
-  const btn = document.getElementById(`csubmit-${postId}`);
-  btn.innerHTML = '<span class="spinner"></span>';
-  btn.disabled = true;
+        const btn = document.getElementById(`csubmit-${postId}`);
+        btn.innerHTML = '<span class="spinner"></span>';
+        btn.disabled = true;
 
-  try {
-    const data = await apiFetch('/comments/create', {
-      method: 'POST',
-      body: JSON.stringify({ post: postId, user, body }),
-    });
+        try {
+          const data = await apiFetch("/comments/create", {
+            method: "POST",
+            body: JSON.stringify({ post: postId, user, body }),
+          });
 
-    // Update local state
-    const postIndex = posts.findIndex(p => p._id === postId);
-    if (postIndex !== -1) {
-      if (!posts[postIndex].comments) posts[postIndex].comments = [];
-      posts[postIndex].comments.push(data.comment);
-    }
+          // Update local state
+          const postIndex = posts.findIndex((p) => p._id === postId);
+          if (postIndex !== -1) {
+            if (!posts[postIndex].comments) posts[postIndex].comments = [];
+            posts[postIndex].comments.push(data.comment);
+          }
 
-    // Update UI
-    const listEl = document.getElementById(`comment-list-${postId}`);
-    const commentHtml = `
+          // Update UI
+          const listEl = document.getElementById(`comment-list-${postId}`);
+          const commentHtml = `
       <div class="comment-item">
-        <div class="comment-avatar" style="background:${avatarColor(user)}">${user.slice(0,2).toUpperCase()}</div>
+        <div class="comment-avatar" style="background:${avatarColor(user)}">${user.slice(0, 2).toUpperCase()}</div>
         <div>
           <div class="comment-user">${esc(user)}</div>
           <div class="comment-body">${esc(body)}</div>
         </div>
       </div>`;
-    if (listEl.querySelector('p')) listEl.innerHTML = '';
-    listEl.insertAdjacentHTML('beforeend', commentHtml);
+          if (listEl.querySelector("p")) listEl.innerHTML = "";
+          listEl.insertAdjacentHTML("beforeend", commentHtml);
 
-    const countEl = document.getElementById(`comment-count-${postId}`);
-    countEl.textContent = parseInt(countEl.textContent) + 1;
+          const countEl = document.getElementById(`comment-count-${postId}`);
+          countEl.textContent = parseInt(countEl.textContent) + 1;
 
-    document.getElementById(`cbody-${postId}`).value = '';
-    localStorage.setItem('blog_username', user);
-    username = user;
-    updateSidebarComments();
-    showToast('Response posted!', 'success');
-  } catch (e) {
-    showToast('Failed: ' + e.message, 'error');
-  } finally {
-    btn.innerHTML = 'Post Response';
-    btn.disabled = false;
-  }
-}
+          document.getElementById(`cbody-${postId}`).value = "";
+          localStorage.setItem("blog_username", user);
+          username = user;
+          updateSidebarComments();
+          showToast("Response posted!", "success");
+        } catch (e) {
+          showToast("Failed: " + e.message, "error");
+        } finally {
+          btn.innerHTML = "Post Response";
+          btn.disabled = false;
+        }
+      }
 
-// ── TOGGLE COMMENTS ─────────────────────────────────────
-function toggleComments(postId) {
-  const section = document.getElementById(`comments-${postId}`);
-  section.classList.toggle('open');
-}
+      // ── TOGGLE COMMENTS ─────────────────────────────────────
+      function toggleComments(postId) {
+        const section = document.getElementById(`comments-${postId}`);
+        section.classList.toggle("open");
+      }
 
-// ── SIDEBAR ─────────────────────────────────────────────
-function updateSidebar() {
-  document.getElementById('s-posts').textContent = posts.length;
-  updateSidebarComments();
-  updateSidebarLikes();
+      // ── SIDEBAR ─────────────────────────────────────────────
+      function updateSidebar() {
+        document.getElementById("s-posts").textContent = posts.length;
+        updateSidebarComments();
+        updateSidebarLikes();
 
-  // Recent list
-  const recent = document.getElementById('recent-list');
-  recent.innerHTML = posts.slice(0, 5).map((p, i) => `
+        // Recent list
+        const recent = document.getElementById("recent-list");
+        recent.innerHTML = posts
+          .slice(0, 5)
+          .map(
+            (p, i) => `
     <div class="recent-item" onclick="document.getElementById('card-${p._id}').scrollIntoView({behavior:'smooth'})">
-      <span class="recent-num">0${i+1}</span>
+      <span class="recent-num">0${i + 1}</span>
       <div>
         <div class="recent-title">${esc(p.title)}</div>
         <div class="recent-meta">${p.likes?.length || 0} likes · ${p.comments?.length || 0} comments</div>
       </div>
-    </div>`).join('');
-}
-function updateSidebarComments() {
-  const total = posts.reduce((sum, p) => sum + (p.comments?.length || 0), 0);
-  document.getElementById('s-comments').textContent = total;
-}
-function updateSidebarLikes() {
-  const total = posts.reduce((sum, p) => sum + (p.likes?.length || 0), 0);
-  document.getElementById('s-likes').textContent = total;
-}
+    </div>`,
+          )
+          .join("");
+      }
+      function updateSidebarComments() {
+        const total = posts.reduce(
+          (sum, p) => sum + (p.comments?.length || 0),
+          0,
+        );
+        document.getElementById("s-comments").textContent = total;
+      }
+      function updateSidebarLikes() {
+        const total = posts.reduce((sum, p) => sum + (p.likes?.length || 0), 0);
+        document.getElementById("s-likes").textContent = total;
+      }
 
-// ── HELPERS ─────────────────────────────────────────────
-function showSkeletons() {
-  document.getElementById('feed').innerHTML = [1,2,3].map(() => `
+      // ── HELPERS ─────────────────────────────────────────────
+      function showSkeletons() {
+        document.getElementById("feed").innerHTML = [1, 2, 3]
+          .map(
+            () => `
     <div class="skel-card">
       <div class="skeleton" style="height:14px;width:15%;margin-bottom:12px"></div>
       <div class="skeleton" style="height:22px;width:75%;margin-bottom:8px"></div>
       <div class="skeleton" style="height:14px;width:100%;margin-bottom:5px"></div>
       <div class="skeleton" style="height:14px;width:90%;margin-bottom:5px"></div>
       <div class="skeleton" style="height:14px;width:70%"></div>
-    </div>`).join('');
-}
+    </div>`,
+          )
+          .join("");
+      }
 
-function formatDate(objectId) {
-  try {
-    const ts = parseInt(objectId.substring(0, 8), 16) * 1000;
-    return new Date(ts).toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' });
-  } catch { return ''; }
-}
+      function formatDate(objectId) {
+        try {
+          const ts = parseInt(objectId.substring(0, 8), 16) * 1000;
+          return new Date(ts).toLocaleDateString("en-IN", {
+            day: "numeric",
+            month: "short",
+            year: "numeric",
+          });
+        } catch {
+          return "";
+        }
+      }
 
-function esc(str) {
-  return String(str || '')
-    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
-    .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
+      function esc(str) {
+        return String(str || "")
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;");
+      }
 
-function avatarColor(name) {
-  const colors = ['#1a1a2e','#c94f3a','#3a6ec9','#3aad6e','#c8933a','#7a3ac9'];
-  let h = 0;
-  for (let i = 0; i < name.length; i++) h = name.charCodeAt(i) + ((h << 5) - h);
-  return colors[Math.abs(h) % colors.length];
-}
+      function avatarColor(name) {
+        const colors = [
+          "#1a1a2e",
+          "#c94f3a",
+          "#3a6ec9",
+          "#3aad6e",
+          "#c8933a",
+          "#7a3ac9",
+        ];
+        let h = 0;
+        for (let i = 0; i < name.length; i++)
+          h = name.charCodeAt(i) + ((h << 5) - h);
+        return colors[Math.abs(h) % colors.length];
+      }
 
-function showToast(msg, type = 'info') {
-  const wrap = document.getElementById('toasts');
-  const el = document.createElement('div');
-  el.className = `toast ${type}`;
-  el.textContent = msg;
-  wrap.appendChild(el);
-  setTimeout(() => el.remove(), 3500);
-}
-</script>
-</body>
+      function showToast(msg, type = "info") {
+        const wrap = document.getElementById("toasts");
+        const el = document.createElement("div");
+        el.className = `toast ${type}`;
+        el.textContent = msg;
+        wrap.appendChild(el);
+        setTimeout(() => el.remove(), 3500);
+      }
+    </script>
+  </body>
 </html>

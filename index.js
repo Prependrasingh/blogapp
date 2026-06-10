@@ -1,20 +1,18 @@
 const express = require("express");
 const app = express();
+const cors = require('cors'); // ← step 1: require at top
 
 require("dotenv").config();
 
 const PORT = process.env.PORT || 5000;
 
+app.use(cors());        // ← step 2: use BEFORE routes
 app.use(express.json());
 
 const blog = require("./routes/blog");
-
 app.use("/api/v1", blog);
 
-require("dotenv").config();
-
 const connectwithDB = require("./config/database");
-
 connectwithDB();
 
 app.get("/", (req, res) => {
@@ -24,6 +22,3 @@ app.get("/", (req, res) => {
 app.listen(PORT, () => {
     console.log(`Server started at port ${PORT}`);
 });
-
-const cors = require('cors');
-app.use(cors());

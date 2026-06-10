@@ -4,10 +4,12 @@ const cors = require('cors'); // ← step 1: require at top
 
 require("dotenv").config();
 
-const PORT = process.env.PORT || 5000;
+
 
 app.use(cors());        // ← step 2: use BEFORE routes
 app.use(express.json());
+
+const PORT = process.env.PORT || 5000;
 
 const blog = require("./routes/blog");
 app.use("/api/v1", blog);

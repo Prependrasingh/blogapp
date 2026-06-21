@@ -897,10 +897,12 @@
         const name = document.getElementById("write-name").value.trim();
         const title = document.getElementById("write-title").value.trim();
         const body = document.getElementById("write-body").value.trim();
+
         if (!name) {
           showToast("Please enter your name", "error");
           return;
         }
+
         if (!title || !body) {
           showToast("Title and body are required", "error");
           return;
@@ -913,19 +915,24 @@
         try {
           const data = await apiFetch("/posts/create", {
             method: "POST",
-            body: JSON.stringify({ title, body }),
+            body: JSON.stringify({
+              name,
+              title,
+              body,
+            }),
           });
+
           localStorage.setItem("blog_username", name);
           username = name;
+
           posts.unshift(data.post);
           renderFeed();
           updateSidebar();
+
           document.getElementById("write-title").value = "";
           document.getElementById("write-body").value = "";
+
           showToast("Post published!", "success");
-          document
-            .getElementById("feed")
-            .scrollIntoView({ behavior: "smooth" });
         } catch (e) {
           showToast("Failed: " + e.message, "error");
         } finally {
